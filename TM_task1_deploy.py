@@ -43,7 +43,8 @@ def generate_ngram_wordcloud(text, n, title):
         st.warning(f"⚠️ No valid words found for {title}. Skipping word cloud.")
         return
 
-    # ✅ Ensure 'punkt' is downloaded before tokenizing (fixes missing tokenizer issue)
+    # ✅ Ensure 'punkt' is downloaded at runtime
+    import nltk
     nltk.download('punkt')
 
     tokens = word_tokenize(text.lower())  # Tokenize & convert to lowercase
