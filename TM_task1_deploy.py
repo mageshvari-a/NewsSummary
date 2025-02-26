@@ -11,7 +11,7 @@ from collections import Counter
 import re
 import string
 
-# Download necessary NLTK data
+# ✅ Download necessary NLTK data (fixes Streamlit deployment issue)
 nltk.download('vader_lexicon')
 nltk.download('punkt')
 nltk.download('stopwords')
@@ -42,6 +42,9 @@ def generate_ngram_wordcloud(text, n, title):
     if not text.strip():
         st.warning(f"⚠️ No valid words found for {title}. Skipping word cloud.")
         return
+
+    # ✅ Ensure 'punkt' is downloaded before tokenizing (fixes missing tokenizer issue)
+    nltk.download('punkt')
 
     tokens = word_tokenize(text.lower())  # Tokenize & convert to lowercase
     tokens = [word for word in tokens if word.isalpha()]  # Remove numbers & special characters
@@ -131,8 +134,3 @@ if uploaded_file is not None:
             st.download_button("📥 Download Sentiment Data", processed_csv, "sentiment_results.csv", "text/csv")
 
 st.write("🚀 **Built with Streamlit & NLTK**")
-
-
-
-
-
