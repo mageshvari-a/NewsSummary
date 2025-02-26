@@ -12,18 +12,15 @@ import re
 import string
 import os
 
-# ✅ Ensure nltk data is downloaded and stored persistently
-nltk_data_path = os.path.join(os.getcwd(), "nltk_data")
-if not os.path.exists(nltk_data_path):
-    os.makedirs(nltk_data_path)
+# ✅ Define a persistent NLTK data directory
+NLTK_DATA_PATH = os.path.join(os.getcwd(), "nltk_data")
+os.makedirs(NLTK_DATA_PATH, exist_ok=True)  # Ensure the directory exists
+nltk.data.path.append(NLTK_DATA_PATH)  # Add to NLTK path
 
-# ✅ Add custom nltk_data path
-nltk.data.path.append(nltk_data_path)
-
-# ✅ Download required NLTK packages to the defined path
-nltk.download('vader_lexicon', download_dir=nltk_data_path)
-nltk.download('punkt', download_dir=nltk_data_path)
-nltk.download('stopwords', download_dir=nltk_data_path)
+# ✅ Force download of required NLTK packages inside the persistent directory
+nltk.download('vader_lexicon', download_dir=NLTK_DATA_PATH)
+nltk.download('punkt', download_dir=NLTK_DATA_PATH)
+nltk.download('stopwords', download_dir=NLTK_DATA_PATH)
 
 # Initialize Sentiment Analyzer
 sia = SentimentIntensityAnalyzer()
@@ -52,8 +49,11 @@ def generate_ngram_wordcloud(text, n, title):
         st.warning(f"⚠️ No valid words found for {title}. Skipping word cloud.")
         return
 
-    # ✅ Use the local NLTK punkt tokenizer
-    tokens = word_tokenize(text.lower(), language='english')  # Tokenize & convert to lowercase
+    # ✅ Manually specify the path for 'punkt'
+    nltk.data.path.append(NLTK_DATA_PATH)
+
+    # ✅ Tokenize using `punkt`
+    tokens = word_tokenize(text.lower())  # Tokenize & convert to lowercase
     tokens = [word for word in tokens if word.isalpha()]  # Remove numbers & special characters
     if not tokens:
         st.warning(f"⚠️ No valid n-grams found for {title}. Skipping word cloud.")
