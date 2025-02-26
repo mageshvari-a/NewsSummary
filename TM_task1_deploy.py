@@ -12,8 +12,26 @@ import re
 import string
 
 # Download necessary NLTK data
-nltk.download('vader_lexicon')
-nltk.download('punkt')
+import os
+
+# Download resources only if they are missing
+nltk_data_path = os.path.expanduser("~/nltk_data")
+if not os.path.exists(nltk_data_path):
+    os.makedirs(nltk_data_path)
+
+nltk.data.path.append(nltk_data_path)
+
+# Try loading first to avoid unnecessary re-downloads
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    nltk.download('punkt', download_dir=nltk_data_path)
+
+try:
+    nltk.data.find('sentiment/vader_lexicon.zip')
+except LookupError:
+    nltk.download('vader_lexicon', download_dir=nltk_data_path)
+
 nltk.download('stopwords')
 
 # Initialize Sentiment Analyzer
