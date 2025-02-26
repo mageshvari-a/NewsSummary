@@ -10,19 +10,20 @@ from nltk.util import ngrams
 from collections import Counter
 import re
 import string
-
-# ✅ Download necessary NLTK data (fixes Streamlit deployment issue)
-nltk.download('vader_lexicon')
-nltk.download('punkt')
-nltk.download('stopwords')
-
-import nltk
 import os
 
-# ✅ Ensure nltk data is downloaded before any processing
-nltk_data_path = os.path.expanduser("~/nltk_data")
+# ✅ Ensure nltk data is downloaded and stored persistently
+nltk_data_path = os.path.join(os.getcwd(), "nltk_data")
+if not os.path.exists(nltk_data_path):
+    os.makedirs(nltk_data_path)
+
+# ✅ Add custom nltk_data path
 nltk.data.path.append(nltk_data_path)
+
+# ✅ Download required NLTK packages to the defined path
+nltk.download('vader_lexicon', download_dir=nltk_data_path)
 nltk.download('punkt', download_dir=nltk_data_path)
+nltk.download('stopwords', download_dir=nltk_data_path)
 
 # Initialize Sentiment Analyzer
 sia = SentimentIntensityAnalyzer()
@@ -51,11 +52,8 @@ def generate_ngram_wordcloud(text, n, title):
         st.warning(f"⚠️ No valid words found for {title}. Skipping word cloud.")
         return
 
-    # ✅ Ensure 'punkt' is downloaded at runtime
-    import nltk
-    nltk.download('punkt')
-
-    tokens = word_tokenize(text.lower())  # Tokenize & convert to lowercase
+    # ✅ Use the local NLTK punkt tokenizer
+    tokens = word_tokenize(text.lower(), language='english')  # Tokenize & convert to lowercase
     tokens = [word for word in tokens if word.isalpha()]  # Remove numbers & special characters
     if not tokens:
         st.warning(f"⚠️ No valid n-grams found for {title}. Skipping word cloud.")
