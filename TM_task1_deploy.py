@@ -14,7 +14,7 @@ import os
 
 # ✅ Ensure NLTK knows where to look
 NLTK_DATA_PATH = os.path.join(os.path.dirname(__file__), "nltk_data")
-nltk.data.path.append(NLTK_DATA_PATH)
+nltk.data.path.append(os.path.join(os.getcwd(), "nltk_data"))
 
 # ✅ Debugging: Check if NLTK path is set correctly
 print("🔍 NLTK Data Path:", NLTK_DATA_PATH)
