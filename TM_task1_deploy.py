@@ -12,13 +12,28 @@ import re
 import string
 import os
 
-# ✅ Set NLTK data path to the repo's directory
+# Ensure NLTK knows where to look
 NLTK_DATA_PATH = os.path.join(os.path.dirname(__file__), "nltk_data")
 nltk.data.path.append(NLTK_DATA_PATH)
 
-# ✅ Verify if files exist, otherwise show an error
-if not os.path.exists(os.path.join(NLTK_DATA_PATH, "sentiment/vader_lexicon/vader_lexicon.txt")):
-    raise FileNotFoundError("❌ Vader lexicon not found! Ensure `nltk_data/sentiment/vader_lexicon/` exists in your repo.")
+# Test loading English tokenizer
+try:
+    tokenizer_path = "tokenizers/punkt/english.pickle"
+    tokenizer = nltk.data.load(tokenizer_path)
+    print("✅ Tokenizer loaded successfully!")
+except Exception as e:
+    print(f"❌ Error loading tokenizer: {e}")
+
+# ✅ Ensure correct file path
+vader_path = os.path.join(NLTK_DATA_PATH, "sentiment/vader_lexicon.txt")
+
+if not os.path.exists(vader_path):
+    raise FileNotFoundError(f"❌ Vader lexicon not found! Expected path: {vader_path}")
+
+# ✅ Load Sentiment Intensity Analyzer
+sia = SentimentIntensityAnalyzer()
+
+print("✅ Vader Sentiment Analyzer initialized successfully!")
 
 # ✅ Initialize Sentiment Analyzer
 sia = SentimentIntensityAnalyzer()
