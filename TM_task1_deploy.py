@@ -16,6 +16,13 @@ import os
 NLTK_DATA_PATH = os.path.join(os.path.dirname(__file__), "nltk_data")  
 nltk.data.path.append(NLTK_DATA_PATH)  # Add to NLTK path
 
+# ✅ Ensure Punkt Tokenizer is available
+punkt_path = os.path.join(NLTK_DATA_PATH, "tokenizers", "punkt")
+
+if not os.path.exists(punkt_path):
+    st.warning("⚠️ Punkt tokenizer not found in repo. Downloading from NLTK...")
+    nltk.download("punkt", download_dir=NLTK_DATA_PATH)
+
 # ✅ Initialize Sentiment Analyzer
 sia = SentimentIntensityAnalyzer()
 
