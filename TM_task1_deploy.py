@@ -33,13 +33,8 @@ vader_path = os.path.join(NLTK_DATA_PATH, "sentiment/vader_lexicon.txt")
 if not os.path.exists(vader_path):
     raise FileNotFoundError(f"❌ Vader lexicon not found! Expected path: {vader_path}")
 
-# ✅ Load Sentiment Intensity Analyzer
-try:
-    sia = SentimentIntensityAnalyzer()
-    print("✅ Vader Sentiment Analyzer initialized successfully!")
-except Exception as e:
-    print(f"❌ Error initializing SentimentIntensityAnalyzer: {e}")
-    raise
+# Ensure the analyzer loads from the correct path
+sia = SentimentIntensityAnalyzer()
 
 # ✅ Function to perform sentiment analysis
 def analyze_sentiment(text):
