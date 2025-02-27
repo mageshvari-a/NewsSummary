@@ -12,19 +12,19 @@ import re
 import string
 import os
 
-# ✅ Set up the correct NLTK data path (pointing to uploaded GitHub directory)
-NLTK_DATA_PATH = os.path.join(os.path.dirname(__file__), "nltk_data")  
-nltk.data.path.append(NLTK_DATA_PATH)  # Add to NLTK path
+# ✅ Set NLTK data path to the repo's directory
+NLTK_DATA_PATH = os.path.join(os.path.dirname(__file__), "nltk_data")
+nltk.data.path.append(NLTK_DATA_PATH)
 
-# ✅ Ensure Punkt Tokenizer is available
-punkt_path = os.path.join(NLTK_DATA_PATH, "tokenizers", "punkt")
-
-if not os.path.exists(punkt_path):
-    st.warning("⚠️ Punkt tokenizer not found in repo. Downloading from NLTK...")
-    nltk.download("punkt", download_dir=NLTK_DATA_PATH)
+# ✅ Verify if files exist, otherwise show an error
+if not os.path.exists(os.path.join(NLTK_DATA_PATH, "sentiment/vader_lexicon/vader_lexicon.txt")):
+    raise FileNotFoundError("❌ Vader lexicon not found! Ensure `nltk_data/sentiment/vader_lexicon/` exists in your repo.")
 
 # ✅ Initialize Sentiment Analyzer
 sia = SentimentIntensityAnalyzer()
+
+# ✅ Test if it's working
+print("✅ NLTK setup complete! SentimentIntensityAnalyzer initialized.")
 
 # ✅ Function to perform sentiment analysis
 def analyze_sentiment(text):
