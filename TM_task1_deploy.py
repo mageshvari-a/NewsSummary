@@ -5,23 +5,27 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from wordcloud import WordCloud
 from nltk.sentiment import SentimentIntensityAnalyzer
-from nltk.tokenize import word_tokenize
+from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.util import ngrams
 from collections import Counter
 import re
 import string
 import os
 
+# Set up the NLTK data path manually
 NLTK_DATA_PATH = os.path.join(os.getcwd(), "nltk_data")
 nltk.data.path.append(NLTK_DATA_PATH)
 
-# Ensure vader_lexicon is available
+# Ensure required NLTK components are available
 try:
-    SentimentIntensityAnalyzer()
+    nltk.data.find("tokenizers/punkt")
+except LookupError:
+    nltk.download("punkt", download_dir=NLTK_DATA_PATH)
+
+try:
+    nltk.data.find("sentiment/vader_lexicon.zip")
 except LookupError:
     nltk.download("vader_lexicon", download_dir=NLTK_DATA_PATH)
-    nltk.data.path.append(NLTK_DATA_PATH)
-
 # Now initialize SentimentIntensityAnalyzer
 sia = SentimentIntensityAnalyzer()
 
