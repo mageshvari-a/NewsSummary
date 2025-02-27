@@ -12,28 +12,17 @@ import re
 import string
 import os
 
-# ✅ Ensure NLTK knows where to look
-NLTK_DATA_PATH = os.path.join(os.path.dirname(__file__), "nltk_data")
-nltk.data.path.append(os.path.join(os.getcwd(), "nltk_data"))
+NLTK_DATA_PATH = os.path.join(os.getcwd(), "nltk_data")
+nltk.data.path.append(NLTK_DATA_PATH)
 
-# ✅ Debugging: Check if NLTK path is set correctly
-print("🔍 NLTK Data Path:", NLTK_DATA_PATH)
-print("📂 Files in NLTK Directory:", os.listdir(NLTK_DATA_PATH) if os.path.exists(NLTK_DATA_PATH) else "❌ Not Found!")
-
-# ✅ Check and load tokenizer
+# Ensure vader_lexicon is available
 try:
-    tokenizer_path = "tokenizers/punkt/english.pickle"
-    tokenizer = nltk.data.load(tokenizer_path)
-    print("✅ Tokenizer loaded successfully!")
-except Exception as e:
-    print(f"❌ Error loading tokenizer: {e}")
+    SentimentIntensityAnalyzer()
+except LookupError:
+    nltk.download("vader_lexicon", download_dir=NLTK_DATA_PATH)
+    nltk.data.path.append(NLTK_DATA_PATH)
 
-# ✅ Check if VADER lexicon exists
-vader_path = os.path.join(NLTK_DATA_PATH, "sentiment/vader_lexicon.txt")
-if not os.path.exists(vader_path):
-    raise FileNotFoundError(f"❌ Vader lexicon not found! Expected path: {vader_path}")
-
-# Ensure the analyzer loads from the correct path
+# Now initialize SentimentIntensityAnalyzer
 sia = SentimentIntensityAnalyzer()
 
 # ✅ Function to perform sentiment analysis
