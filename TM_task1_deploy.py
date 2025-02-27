@@ -12,20 +12,15 @@ import re
 import string
 import os
 
-# Set up the NLTK data path manually
 NLTK_DATA_PATH = os.path.join(os.getcwd(), "nltk_data")
 nltk.data.path.append(NLTK_DATA_PATH)
 
-# Ensure required NLTK components are available
-try:
-    nltk.data.find("tokenizers/punkt")
-except LookupError:
-    nltk.download("punkt", download_dir=NLTK_DATA_PATH)
+# Download required NLTK data
+nltk.download("vader_lexicon", download_dir=NLTK_DATA_PATH)
+nltk.download("punkt", download_dir=NLTK_DATA_PATH)
 
-try:
-    nltk.data.find("sentiment/vader_lexicon.zip")
-except LookupError:
-    nltk.download("vader_lexicon", download_dir=NLTK_DATA_PATH)
+print("NLTK data successfully downloaded!")
+
 # Now initialize SentimentIntensityAnalyzer
 sia = SentimentIntensityAnalyzer()
 
